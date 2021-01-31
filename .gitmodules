@@ -1,0 +1,3 @@
+[submodule "examples/contrib/FreeRTOS-Plus-TCP"]
+	path = examples/contrib/FreeRTOS-Plus-TCP
+	url = https://github.com/FreeRTOS/FreeRTOS-Plus-TCP.git
