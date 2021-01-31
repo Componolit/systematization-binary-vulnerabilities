@@ -8,7 +8,7 @@ VPATH += src $(FREERTOS_PLUS_TCP_PATH) $(FREERTOS_PLUS_TCP_PATH)/portable/Buffer
 DUMMY := $(shell mkdir -p obj)
 VERBOSE ?= @
 
-VULNS = vuln_75 vuln_74
+VULNS = vuln_75 vuln_74 vuln_73
 
 all: $(addprefix obj/,$(addsuffix .run,$(sort $(VULNS))))
 
@@ -23,7 +23,6 @@ obj/freertos.a: \
 	obj/FreeRTOS_DHCP.o \
 	obj/FreeRTOS_IP.o \
 	obj/FreeRTOS_UDP_IP.o \
-	obj/FreeRTOS_Sockets.o \
 	obj/BufferAllocation_1.o \
 	obj/freertos_10_0_1_helper.o \
 	obj/list.o \
