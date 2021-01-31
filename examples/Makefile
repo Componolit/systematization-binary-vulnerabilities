@@ -8,12 +8,17 @@ VPATH += src $(FREERTOS_PLUS_TCP_PATH) $(FREERTOS_PLUS_TCP_PATH)/portable/Buffer
 DUMMY := $(shell mkdir -p obj)
 VERBOSE ?= @
 
-VULNS = vuln_75
+VULNS = vuln_75 vuln_74
 
-all: $(addprefix obj/,$(VULNS))
-	$(VERBOSE)for t in $<; do echo "Running $$t"; ./$$t; done
+all: $(addprefix obj/,$(addsuffix .run,$(sort $(VULNS))))
 
-obj/vuln_75: \
+FREERTOS_CFLAGS = \
+		-Iinclude/FreeRTOS-10.0.1 \
+		-I$(FREERTOS_PLUS_TCP_PATH) \
+		-I$(FREERTOS_PLUS_TCP_PATH)/include \
+		-I$(FREERTOS_PLUS_TCP_PATH)/portable/Compiler/GCC \
+
+obj/freertos.a: \
 	obj/FreeRTOS_ARP.o \
 	obj/FreeRTOS_DHCP.o \
 	obj/FreeRTOS_IP.o \
@@ -23,16 +28,17 @@ obj/vuln_75: \
 	obj/freertos_10_0_1_helper.o \
 	obj/list.o \
 	obj/port.o \
-	obj/queue.o \
-	obj/vuln_75.o
-obj/vuln_75: \
-	CFLAGS += \
-		-Iinclude/FreeRTOS-10.0.1 \
-		-I$(FREERTOS_PLUS_TCP_PATH) \
-		-I$(FREERTOS_PLUS_TCP_PATH)/include \
-		-I$(FREERTOS_PLUS_TCP_PATH)/portable/Compiler/GCC \
-		$(COMMON_CFLAGS)
-obj/vuln_75:
+	obj/queue.o
+	$(VERBOSE)$(AR) -crs $@ $^
+	$(VERBOSE)rm $^
+
+obj/%.run: obj/%
+	$(VERBOSE)echo -n "Running $* … "
+	$(VERBOSE)./$< 2> $@.tmp && { echo "ERROR"; exit 1; } || echo "SUCCESS"
+	$(VERBOSE)mv $@.tmp $@
+
+obj/%: CFLAGS += $(FREERTOS_CFLAGS) $(COMMON_CFLAGS)
+obj/%: obj/freertos.a obj/%.o
 	$(VERBOSE)$(CC) $(LDFLAGS) -o $@ -Wl,--start-group $^ -Wl,--end-group
 
 obj/%.o: %.c
