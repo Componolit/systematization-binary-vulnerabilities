@@ -25,7 +25,7 @@ BaseType_t xQueueGenericSendFromISR( QueueHandle_t xQueue, const void * const pv
 
 UBaseType_t uxQueueMessagesWaitingFromISR( const QueueHandle_t xQueue )                                                                                                       
 {
-   errx(1, "NOT IMPLEMENTED: %s", __func__);
+   return 256;
 }
 
 void vQueueDelete( QueueHandle_t xQueue )                                                                                                                                     

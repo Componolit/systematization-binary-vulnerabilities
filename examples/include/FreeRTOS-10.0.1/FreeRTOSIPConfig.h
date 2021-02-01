@@ -10,5 +10,6 @@
 #define ipconfigUSE_DNS 0
 #define ipconfigUSE_TCP 0
 #define ipconfigREPLY_TO_INCOMING_PINGS 1
+#define ipconfigDRIVER_INCLUDED_RX_IP_CHECKSUM 1
 
 #endif // FREERTOS_IP_CONFIG_H

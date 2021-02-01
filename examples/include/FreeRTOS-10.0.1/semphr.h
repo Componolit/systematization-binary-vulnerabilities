@@ -5,7 +5,7 @@
 
 typedef QueueHandle_t SemaphoreHandle_t;
 
-#define xSemaphoreCreateCounting(m, i) (0)
+#define xSemaphoreCreateCounting(m, i) ((SemaphoreHandle_t *)1)
 #define xSemaphoreTake(s, t) (pdPASS)
 #define xSemaphoreTakeFromISR(s, h) (pdPASS)
 #define xSemaphoreGiveFromISR(s, h) (pdPASS)
