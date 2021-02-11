@@ -1,21 +1,15 @@
-#include "FreeRTOS.h"
-#include "list.h"
-#include "task.h"
-#include "FreeRTOS_IP.h"
-#include "FreeRTOS_IP_Private.h"
-#include "FreeRTOS_ARP.h"
+#include <freertos_10_0_1_helper.h>
 
 char data[] =
    // Ethernet header
-   "\0\0\0\0\0\0\0\0\0\0\0\0\0\0"
-   // IP header
-   "\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"
+   "\x00\x00\x00\x00\x00\x00" // destination
+   "\x00\x00\x00\x00\x00\x00" // source
+   "\x08\x06"                 // ether type: ARP
    // ARP header
-   "\0\0"    // hardware address space
+   "\x00\x00"                 // hardware address space
    ;
 
 int main()
 {
-   eFrameProcessingResult_t result = eARPProcessPacket ((ARPPacket_t *)data);
+   process_ethernet (data, sizeof(data));
 }
-
