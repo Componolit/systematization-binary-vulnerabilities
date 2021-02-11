@@ -11,6 +11,7 @@
 #include <FreeRTOS_IP_Private.h>
 #include <FreeRTOS_Sockets.h>
 #include <NetworkInterface.h>
+#include <NetworkBufferManagement.h>
 
 void *recvfrom_data = NULL;
 unsigned long recvfrom_data_length = 0;
@@ -87,4 +88,18 @@ void vNetworkSocketsInit( void )
 FreeRTOS_Socket_t *pxUDPSocketLookup( UBaseType_t uxLocalPort )
 {
    errx(1, "%s called", __func__);
+}
+
+void prvProcessEthernetPacket( NetworkBufferDescriptor_t * const pxNetworkBuffer );
+
+void process_ethernet(char *buffer, size_t len)
+{
+   NetworkBufferDescriptor_t *network_buffer;
+   if (xNetworkBuffersInitialise() != pdPASS) {
+      errx(1, "Error initializing network buffers");
+   }
+   network_buffer = pxNetworkBufferGetFromISR(1500);
+   network_buffer->xDataLength = len;
+   network_buffer->pucEthernetBuffer = buffer;
+   prvProcessEthernetPacket (network_buffer);
 }

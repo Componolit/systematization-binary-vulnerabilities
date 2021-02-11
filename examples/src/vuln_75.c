@@ -1,16 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <err.h>
-
-#include "FreeRTOS.h"
-#include "list.h"
-#include "task.h"
-#include "FreeRTOS_IP.h"
-#include "FreeRTOS_IP_Private.h"
-#include "NetworkBufferManagement.h"
-
-NetworkBufferDescriptor_t *network_buffer;
-void prvProcessEthernetPacket( NetworkBufferDescriptor_t * const pxNetworkBuffer );
+#include <freertos_10_0_1_helper.h>
 
 char data[] =
    // Ethernet header
@@ -34,11 +22,5 @@ char data[] =
 
 int main()
 {
-   if (xNetworkBuffersInitialise() != pdPASS) {
-      errx(1, "Error initializing network buffers");
-   }
-   network_buffer = pxNetworkBufferGetFromISR(1500);
-   network_buffer->xDataLength = sizeof(data);
-   network_buffer->pucEthernetBuffer = data;
-   prvProcessEthernetPacket (network_buffer);
+   process_ethernet (data, sizeof(data));
 }
