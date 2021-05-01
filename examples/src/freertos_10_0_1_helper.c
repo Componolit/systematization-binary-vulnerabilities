@@ -87,7 +87,7 @@ void vNetworkSocketsInit( void )
 
 FreeRTOS_Socket_t *pxUDPSocketLookup( UBaseType_t uxLocalPort )
 {
-   errx(1, "%s called", __func__);
+   return NULL;
 }
 
 void prvProcessEthernetPacket( NetworkBufferDescriptor_t * const pxNetworkBuffer );
@@ -102,4 +102,14 @@ void process_ethernet(char *buffer, size_t len)
    network_buffer->xDataLength = len;
    network_buffer->pucEthernetBuffer = buffer;
    prvProcessEthernetPacket (network_buffer);
+}
+
+BaseType_t FreeRTOS_bind( Socket_t xSocket, struct freertos_sockaddr * pxAddress, socklen_t xAddressLength )
+{
+   errx(1, "%s called", __func__);
+}
+
+BaseType_t FreeRTOS_closesocket( Socket_t xSocket )
+{
+   errx(1, "%s called", __func__);
 }
