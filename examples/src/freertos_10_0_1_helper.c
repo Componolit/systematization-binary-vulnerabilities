@@ -113,3 +113,8 @@ BaseType_t FreeRTOS_closesocket( Socket_t xSocket )
 {
    errx(1, "%s called", __func__);
 }
+
+BaseType_t xApplicationDNSQueryHook( const char *pcName )
+{
+   return pdTRUE;
+}
